@@ -1,12 +1,13 @@
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.keys import Keys
 import time
 import unittest
-from django.test import LiveServerTestCase
-from selenium.common.exceptions import WebDriverException
-MAX_WAIT = 10
 
-class NewVisitorTest(LiveServerTestCase):
+MAX_WAIT = 20
+
+class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -18,12 +19,11 @@ class NewVisitorTest(LiveServerTestCase):
         start_time = time.time()
         while True:
             try:
-                table = self.browser.find_element_by_id('id_list_table')
                 rows = self.browser.find_elements_by_tag_name('tr')
                 self.assertIn(
                     row_text, 
                     [row.text for row in rows],
-                    f"New to-do item did not appear in table. Contents were:\n{table.text}",)
+                    f"New to-do item did not appear in table.",)
                 return
             except(AssertionError, WebDriverException) as e:
                 if time.time() - start_time > MAX_WAIT:
@@ -121,15 +121,15 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
             inputbox.location['x'] + inputbox.size['width'] / 2, 
-            512, 
+            272, 
             delta=10)
 
         # She starts a new list and sees the input is nicely centered there too
-        inputbox.send_keys('tesitng')
+        inputbox.send_keys('testing')
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: testing')
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
             inputbox.location['x'] + inputbox.size['width'] / 2, 
-            512, 
+            272, 
             delta=10)
