@@ -19,6 +19,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         super().setUpClass()
         cls.server_url = cls.live_server_url
         cls.server_url = 'http://35.189.8.90'
+        #cls.server_url = 'http://127.0.0.1:8000'
 
     @classmethod
     def tearDownClass(cls):
