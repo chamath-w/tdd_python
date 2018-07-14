@@ -1,0 +1,10 @@
+[Unit]
+Description=Guniforn server for superlists-staging located at /etc/systemd/system/gunicorn-superlists-staging.service
+
+[Service]
+WorkingDirectory=/home/chmath_wijeratne/sites/www.staging.my-website.com/source
+ExecStart=/home/chamath_wijeratne/sites/www.staging.my-website.com/virtualenv/bin/gunicorn --bind unix:/tmp/superlists-staging.socket superlists.wsgi:application
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
